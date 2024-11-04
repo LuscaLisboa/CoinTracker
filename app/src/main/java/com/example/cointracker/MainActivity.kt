@@ -93,12 +93,23 @@ fun Header(){
 }
 
 @Composable
+fun ResponseView(response: String) {
+    return Box(modifier = Modifier
+        .height(200.dp)
+        .fillMaxWidth()
+        .background(Color.Cyan),
+        contentAlignment = Alignment.Center
+    ){
+        Text(text = response)
+    }
+}
+
+@Composable
 fun DetailedCoinScreen(navController: NavController, id: String?){
 
     if(id.isNullOrBlank())
         return (
-            Button(modifier = Modifier
-                .background(Color.Red),
+            Button(modifier = Modifier,
                 onClick = { navController.navigate("MainScreen") }
             ) {
                 Text("Falha ao carregar. Voltar")
@@ -170,14 +181,7 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
                 )
             }
             response != null -> {
-                Box(modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth()
-                    .background(Color.Cyan),
-                    contentAlignment = Alignment.Center
-                ){
-                    Text(text = response!!)
-                }
+                ResponseView(response!!)
             }
         }
 
