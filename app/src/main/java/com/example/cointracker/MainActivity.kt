@@ -134,18 +134,11 @@ fun detailedCryptoText(detailedCrypto: detailedCrypto): String {
 
 @Composable
 fun ResponseView(response: List<detailedCrypto?>){
-
-    return Box(modifier = Modifier
-        .fillMaxWidth()
-        .background(Color.Cyan),
-        contentAlignment = Alignment.Center
-    ){
-        response.forEach{ crypto ->
-            if (crypto != null) {
-                Text(text = detailedCryptoText(detailedCrypto = crypto))
-            }
+    return (response.forEach{ crypto ->
+        if (crypto != null) {
+            Text(text = detailedCryptoText(detailedCrypto = crypto))
         }
-    }
+    })
 }
 
 @Composable
@@ -227,7 +220,15 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
                 )}
             }
             response != null -> {
-                item{ResponseView(response!!)}
+                item {
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Cyan),
+                        contentAlignment = Alignment.Center
+                    ){
+                        ResponseView(response = response!!)
+                    }
+                }
             }
         }
 
