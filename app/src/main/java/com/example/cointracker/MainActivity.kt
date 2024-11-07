@@ -44,9 +44,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cointracker.model.detailedCrypto
 import com.example.cointracker.viewModel.SimpleCrypto
 import com.example.cointracker.viewModel.SimpleCryptoViewModel
 import com.example.cointracker.ui.theme.CoinTrackerTheme
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -115,13 +118,58 @@ fun Header() {
     )
 }
 
+fun detailedCryptoText(detailedCrypto: detailedCrypto): String {
+    try {
+        return """
+            id: ${detailedCrypto.id}
+            symbol: ${detailedCrypto.symbol}
+            name: ${detailedCrypto.name}
+            image: ${detailedCrypto.image}
+            current_price: ${detailedCrypto.current_price}
+            market_cap: ${detailedCrypto.market_cap}
+            market_cap_rank: ${detailedCrypto.market_cap_rank}
+            fully_diluted_valuation: ${detailedCrypto.fully_diluted_valuation}
+            total_volume: ${detailedCrypto.total_volume}
+            high_24h: ${detailedCrypto.high_24h}
+            low_24h: ${detailedCrypto.low_24h}
+            price_change_24h: ${detailedCrypto.price_change_24h}
+            price_change_percentage_24h: ${detailedCrypto.price_change_percentage_24h}
+            market_cap_change_24h: ${detailedCrypto.market_cap_change_24h}
+            market_cap_change_percentage_24h: ${detailedCrypto.market_cap_change_percentage_24h}
+            circulating_supply: ${detailedCrypto.circulating_supply}
+            total_supply: ${detailedCrypto.total_supply}
+            max_supply: ${detailedCrypto.max_supply}
+            ath: ${detailedCrypto.ath}
+            ath_change_percentage: ${detailedCrypto.ath_change_percentage}
+            ath_date: ${detailedCrypto.ath_date}
+            atl: ${detailedCrypto.atl}
+            atl_change_percentage: ${detailedCrypto.atl_change_percentage}
+            atl_date: ${detailedCrypto.atl_date}
+            roi_times: ${detailedCrypto.roi?.times ?: "N/A"}
+            roi_currency: ${detailedCrypto.roi?.currency ?: "N/A"}
+            roi_percentage: ${detailedCrypto.roi?.percentage ?: "N/A"}
+            last_updated: ${detailedCrypto.last_updated}
+        """
+    } catch (e: Exception) {
+        return "Erro ao carregar dados."
+    }
+}
+
+@Composable
+fun ResponseView(response: List<detailedCrypto?>){
+    return (response.forEach{ crypto ->
+        if (crypto != null) {
+            Text(text = detailedCryptoText(detailedCrypto = crypto))
+        }
+    })
+}
+
 @Composable
 fun DetailedCoinScreen(navController: NavController, id: String?){
 
     if(id.isNullOrBlank())
         return (
-            Button(modifier = Modifier
-                .background(Color.Red),
+            Button(modifier = Modifier,
                 onClick = { navController.navigate("MainScreen") }
             ) {
                 Text("Falha ao carregar. Voltar")
@@ -135,7 +183,7 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
             .build()
     }
 
-    var response by remember { mutableStateOf<String?>(null) }
+    var response by remember { mutableStateOf<List<detailedCrypto?>?>(null) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
 
@@ -151,9 +199,11 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
                 try {
                     val result = client.newCall(request).execute()
                     if (result.isSuccessful) {
-                        response = result.body?.string()
+                        response = result.body?.string()?.let { jsonString ->
+                            Gson().fromJson(jsonString, object : TypeToken<List<detailedCrypto>>() {}.type)
+                        }
                     } else {
-                        error = "Error: ${result.code}"
+                        error = "GSON Error: ${result.code}"
                     }
                 }catch (e: IOException) {
                     error = "Network error: ${e.message}"
@@ -166,50 +216,51 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
         }
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.Gray)
     ) {
 
-        Header()
+        item{Header()}
 
-        Spacer(modifier = Modifier.height(20.dp))
+        item{Spacer(modifier = Modifier.height(20.dp))}
 
         when{
             isLoading -> {
-                Box(
+                item{Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
-                }
+                }}
             }
             error != null -> {
-                Text(
+                item{Text(
                     text = error ?: "Unknown error",
                     color = Color.Red,
                     modifier = Modifier.padding(16.dp)
-                )
+                )}
             }
             response != null -> {
-                Box(modifier = Modifier
-                    .height(200.dp)
-                    .fillMaxWidth()
-                    .background(Color.Cyan),
-                    contentAlignment = Alignment.Center
-                ){
-                    Text(text = response!!)
+                item {
+                    Box(modifier = Modifier
+                        .fillMaxWidth()
+                        .background(Color.Cyan),
+                        contentAlignment = Alignment.Center
+                    ){
+                        ResponseView(response = response!!)
+                    }
                 }
             }
         }
 
-        Button(modifier = Modifier
+        item{Button(modifier = Modifier
             .background(Color.Red),
             onClick = { navController.navigate("MainScreen") }
         ) {
             Text("Voltar")
-        }
+        }}
     }
 }
 
