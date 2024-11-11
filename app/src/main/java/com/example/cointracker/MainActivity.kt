@@ -1,6 +1,7 @@
 package com.example.cointracker
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -17,9 +18,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -33,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -85,9 +89,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Header() {
+    // Box do Header
     Box(
         modifier = Modifier
-            .height(100.dp)  // Altura ajustada conforme solicitado
+            .height(100.dp)  // ajusta a altura
             .fillMaxWidth()
             .background(
                 brush = Brush.verticalGradient(
@@ -100,23 +105,49 @@ fun Header() {
     ) {
         // Centralizando a imagem dentro do Box
         Image(
-            painter = painterResource(id = R.drawable.ftftp),
+            painter = painterResource(id = R.drawable.ftftp),  // Substitua com o nome da sua imagem
             contentDescription = "Logo",
             modifier = Modifier
                 .size(200.dp)
-                .align(Alignment.CenterStart)
-
+                .align(Alignment.CenterStart)  // Alinha à esquerda
         )
-    }
 
-    // Linha abaixo do header
+        Button(
+            onClick = {},
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent, // R o fundo azul
+            ),
+            modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 16.dp)
+                .size(120.dp, 50.dp),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 0.dp,
+                pressedElevation = 0.dp
+            ),
+            border = null // Remove a borda
+        ) {
+            Text(
+                text = "\uD83D\uDDA4",
+                fontSize = 24.sp
+            )
+        }
+    }
     Box(
         modifier = Modifier
-            .height(2.5.dp)
-            .fillMaxWidth()
-            .background(Color.Yellow)
+            .height(2.5.dp)  //O tamanho da linha
+            .fillMaxWidth() //linha ocupa toda a largura da tela
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Yellow,
+                        Color.DarkGray
+                    )
+                )
+            )
     )
 }
+
 
 fun detailedCryptoText(detailedCrypto: detailedCrypto): String {
     try {
