@@ -144,14 +144,14 @@ fun ResponseView(response: List<detailedCrypto?>){
 @Composable
 fun DetailedCoinScreen(navController: NavController, id: String?){
 
-    if(id.isNullOrBlank())
+    if(id.isNullOrBlank()){
         return (
             Button(modifier = Modifier,
                 onClick = { navController.navigate("MainScreen") }
             ) {
                 Text("Falha ao carregar. Voltar")
             }
-    )
+    )}
 
     val client = remember {
         OkHttpClient.Builder()
