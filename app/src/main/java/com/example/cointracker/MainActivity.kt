@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
@@ -28,8 +30,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -75,19 +84,33 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Header(){
+fun Header() {
     Box(
         modifier = Modifier
-            .height(100.dp)
+            .height(100.dp)  // Altura ajustada conforme solicitado
             .fillMaxWidth()
-            .background(Color.Black),
-        contentAlignment = Alignment.Center
-    ){
-        Text(text = "HEADER",
-            color = Color.Yellow
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Black,
+                        Color.DarkGray
+                    )
+                )
+            )
+    ) {
+        // Centralizando a imagem dentro do Box
+        Image(
+            painter = painterResource(id = R.drawable.ftftp),
+            contentDescription = "Logo",
+            modifier = Modifier
+                .size(200.dp)
+                .align(Alignment.CenterStart)
+
         )
     }
-    Box( // 'linha' amarela do Header
+
+    // Linha abaixo do header
+    Box(
         modifier = Modifier
             .height(2.5.dp)
             .fillMaxWidth()
