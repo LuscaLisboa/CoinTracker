@@ -1,16 +1,17 @@
 package com.example.cointracker.view
 
-import android.text.Layout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,9 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.app.NotificationCompat.Style
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.cointracker.model.detailedCrypto
 
 @Composable
@@ -40,7 +39,8 @@ fun ResponseView(response: List<detailedCrypto?>){
                 ){
                     Column (modifier = Modifier
                         ){
-                        Row {
+                        Row (modifier = Modifier
+                            .height(25.dp)){
                             Text(text = crypto.name,
                                 modifier = Modifier,
                                 style = TextStyle(
@@ -60,12 +60,26 @@ fun ResponseView(response: List<detailedCrypto?>){
                             )
                         }
                     }
-                    Column (modifier = Modifier){
+                    Column (modifier = Modifier,
+                        horizontalAlignment = Alignment.End
+                    ){
                         Text(text = crypto.symbol,
                             style = TextStyle(
                                 fontSize = 20.sp,
                                 color = Color.White
-                            ))
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(50.dp))
+                        Text(text = "$ ${crypto.current_price}",
+                            style = TextStyle(
+                                fontSize = 20.sp,
+                                color = Color.Green
+                            )
+                        )
+                        Box(modifier = Modifier
+                            .width(150.dp)
+                            .height(5.dp)
+                            .background(Color.Green)){}
                     }
                 }
                 Row (modifier = Modifier
