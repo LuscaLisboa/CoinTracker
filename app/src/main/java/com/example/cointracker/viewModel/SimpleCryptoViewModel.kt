@@ -70,9 +70,9 @@ class SimpleCryptoViewModel(application: Application) : AndroidViewModel(applica
         }
     }
 
-    lateinit var database : SimpleCryptoDatabase
-        private set
-
+//    lateinit var database : SimpleCryptoDatabase
+//        private set
+//
 //    override fun onCreate(){
 //        super.onCreate()
 //        instance = this
