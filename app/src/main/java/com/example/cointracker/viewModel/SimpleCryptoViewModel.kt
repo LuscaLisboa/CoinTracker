@@ -5,18 +5,16 @@ import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModelProvider.NewInstanceFactory.Companion.instance
 import androidx.lifecycle.viewModelScope
+import androidx.room.Room
+import com.example.cointracker.SimpleCryptoDatabase
+import com.example.cointracker.model.SimpleCrypto
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
 import java.io.IOException
 
-data class SimpleCrypto(
-    val id: String,
-    val symbol: String,
-    val name: String,
-    val image: String
-)
 
 class SimpleCryptoViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -71,4 +69,15 @@ class SimpleCryptoViewModel(application: Application) : AndroidViewModel(applica
             emptyList()
         }
     }
+
+    lateinit var database : SimpleCryptoDatabase
+        private set
+
+//    override fun onCreate(){
+//        super.onCreate()
+//        instance = this
+//        database = Room.databaseBuilder(this, SimpleCryptoDatabase::clas.java,
+//            "simpleCrypto-db")
+//            .build()
+//    }
 }

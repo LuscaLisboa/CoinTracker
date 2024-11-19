@@ -22,8 +22,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.cointracker.model.SimpleCrypto
 import com.example.cointracker.screen.header.Header
-import com.example.cointracker.viewModel.SimpleCrypto
 import com.example.cointracker.viewModel.SimpleCryptoViewModel
 
 @Composable
