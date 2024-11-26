@@ -49,20 +49,21 @@ fun Header() {
         Button(
             onClick = {},
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Transparent, // R o fundo azul
+                containerColor = Color.Transparent,
             ),
             modifier = Modifier
                 .align(Alignment.CenterEnd)
                 .padding(end = 16.dp)
-                .size(120.dp, 50.dp),
+                .size(120.dp, 60.dp),
             elevation = ButtonDefaults.buttonElevation(
                 defaultElevation = 0.dp,
                 pressedElevation = 0.dp
             ),
             border = null // Remove a borda
+
         ) {
             Text(
-                text = "\uD83D\uDDA4",
+                text = "\uD83D\uDC9B",
                 fontSize = 24.sp
             )
         }

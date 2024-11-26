@@ -1,5 +1,6 @@
 package com.example.cointracker.screen.detailedCoinScreen
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -60,7 +61,7 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
     LaunchedEffect(Unit) {
         try {
             val request = Request.Builder()
-                .url("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=$id")
+                .url("https://api.coingecko.com/api/v3/coins/markets?vs_currency=brl&ids=$id")
                 .get()
                 .addHeader("accept", "application/json")
                 .build()
@@ -91,51 +92,71 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
             .fillMaxSize()
             .background(Color.Gray)
     ) {
+        item { Header() }
 
-        item{ Header() }
+        item { Spacer(modifier = Modifier.height(20.dp)) }
 
-        item{ Spacer(modifier = Modifier.height(20.dp)) }
-
-        when{
+        when {
             isLoading -> {
-                item{
+                item {
                     Box(
-                    modifier = Modifier.fillMaxWidth(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
             }
             error != null -> {
-                item{
+                item {
                     Text(
-                    text = error ?: "Unknown error",
-                    color = Color.Red,
-                    modifier = Modifier.padding(16.dp)
-                )
+                        text = error ?: "Unknown error",
+                        color = Color.Red,
+                        modifier = Modifier.padding(16.dp)
+                    )
                 }
             }
             response != null -> {
                 item {
-                    Box(modifier = Modifier
-                        .fillMaxWidth()
-                        .background(Color.Cyan),
+                    Box(
+                        modifier = Modifier
+                            .background(Color.Cyan),
                         contentAlignment = Alignment.Center
-                    ){
+                    ) {
                         ResponseView(response = response!!)
+                    }
+                }
+
+                item {
+                    Button(
+                        onClick = {
+                            val coin = response?.firstOrNull()
+                            if (coin != null) {
+                                val shareIntent = Intent().apply {
+                                    action = Intent.ACTION_SEND
+                                    putExtra(Intent.EXTRA_TEXT, "Moeda: ${coin.name}, Valor: ${coin.current_price} BRL")
+                                    type = "text/plain"
+                                }
+                                navController.context.startActivity(Intent.createChooser(shareIntent, "Compartilhar dados"))
+                            }
+                        },
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = "Compartilhar dados")
                     }
                 }
             }
         }
 
-        item{
-            Button(modifier = Modifier
-            .background(Color.Red),
-            onClick = { navController.navigate("MainScreen") }
-        ) {
-            Text("Voltar")
-        }
+        item {
+            Button(
+                modifier = Modifier.background(Color.Red),
+                onClick = { navController.navigate("MainScreen") }
+            ) {
+                Text("Voltar")
+            }
         }
     }
 }
