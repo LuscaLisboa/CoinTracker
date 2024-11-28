@@ -151,11 +151,17 @@ fun DetailedCoinScreen(navController: NavController, id: String?){
         }
 
         item {
-            Button(
-                modifier = Modifier.background(Color.Red),
-                onClick = { navController.navigate("MainScreen") }
+            Box(
+               modifier = Modifier.fillMaxSize() // Faz o Box ocupar todo o espaço disponível
             ) {
-                Text("Voltar")
+                Button(
+                    modifier = Modifier
+                        .background(Color.Transparent) // Definir fundo transparente
+                        .align(Alignment.Center), // Alinha o botão ao centro
+                    onClick = { navController.navigate("MainScreen") },
+                ) {
+                    Text("Voltar")
+                }
             }
         }
     }

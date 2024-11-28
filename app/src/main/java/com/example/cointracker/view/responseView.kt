@@ -37,24 +37,28 @@ fun ResponseView(response: List<detailedCrypto?>) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .size(200.dp)
                         .background(Color.Black),
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column {
-                        Row(modifier = Modifier.height(25.dp)) {
+                        Row(
+                            modifier = Modifier
+                                .height(60.dp)
+                        ) {
                             Text(
                                 text = crypto.name,
-                                style = TextStyle(fontSize = 25.sp, color = Color.White)
+                                style = TextStyle(fontSize = 30.sp, color = Color.White)
                             )
                         }
-                        Row(modifier = Modifier.height(75.dp)) {
+                        Row(modifier = Modifier.height(110.dp)) {
                             Image(
                                 painter = rememberAsyncImagePainter(model = crypto.image),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .fillMaxHeight()
-                                    .size(50.dp)
+                                    .size(170.dp)
                             )
                         }
                     }
@@ -64,21 +68,21 @@ fun ResponseView(response: List<detailedCrypto?>) {
                     ) {
                         Text(
                             text = crypto.symbol,
-                            style = TextStyle(fontSize = 20.sp, color = Color.White)
+                            style = TextStyle(fontSize = 50.sp, color = Color.White)
                         )
-                        Spacer(modifier = Modifier.height(50.dp))
+                        Spacer(modifier = Modifier.height(65.dp))
                         Text(
 
                             text = "BRL ${crypto.current_price}" ,
-                            style = TextStyle(fontSize = 20.sp, color = Color.Green),
-                            modifier = Modifier.alpha(1f)
+                            style = TextStyle(fontSize = 30.sp, color = Color.Green),
+                            modifier = Modifier.alpha(2f)
                         )
                         Box(
                             modifier = Modifier
-                                .width(150.dp)
+                                .width(195.dp)
                                 .height(5.dp)
                                 .background(Color.Green)
-                        ) {}
+                        )
                     }
                 }
                 Row(
