@@ -59,7 +59,7 @@ fun Header() {
                 defaultElevation = 0.dp,
                 pressedElevation = 0.dp
             ),
-            border = null // Remove a borda
+            border = null // Remove a   borda
 
         ) {
             Text(
